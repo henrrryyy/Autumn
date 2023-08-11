@@ -1822,7 +1822,7 @@ modules.Disabler = lib:MakeButton({
 	end,
 })
 
--- [[modules.Hostpanel = lib:MakeButton({
+--[[modules.Hostpanel = lib:MakeButton({
 	["Name"] = "Hostpanel",
 	["Window"] = "Exploit",
 	["Function"] = function(callback)
