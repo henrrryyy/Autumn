@@ -1822,7 +1822,7 @@ modules.Disabler = lib:MakeButton({
 	end,
 })
 
-modules.Hostpanel = lib:MakeButton({
+-- [[modules.Hostpanel = lib:MakeButton({
 	["Name"] = "Hostpanel",
 	["Window"] = "Exploit",
 	["Function"] = function(callback)
@@ -1874,7 +1874,7 @@ modules.Hostpanel = lib:MakeButton({
 			lib:Notify("Hostpanel will turn off next game.", 7.5)
 		end
 	end,
-})
+})]]
 
 task.wait(1)
 
