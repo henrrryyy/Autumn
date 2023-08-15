@@ -373,12 +373,18 @@ Aura = GuiLibrary.API.Windows.Combat.CreateButton({
                 for i,v in pairs(game.Players:GetPlayers()) do
                     if v.Name ~= getlplr().Name then
                         if v.Team == getlplr().Team then
-                            local args = {
-                                [1] = workspace:WaitForChild(v.Name),
-                                [2] = true,
-                                [3] = "WoodenSword"
-                            }
-                            Rf.AttackPlayerWithSword:InvokeServer(unpack(args))
+							local args = {
+								[1] = workspace:WaitForChild(v.Name),
+								[2] = true,
+								[3] = "WoodenSword"
+							}
+							Rf.AttackPlayerWithSword:InvokeServer(unpack(args))
+							args = {
+								[1] = workspace:WaitForChild(v.Name),
+								[2] = true,
+								[3] = "Sword"
+							}
+							Rf.AttackPlayerWithSword:InvokeServer(unpack(args))
                         end
                     end
                 end
@@ -412,7 +418,7 @@ Autoblock = GuiLibrary.API.Windows.Combat.CreateButton({
 })
 
 local godmodeconnection
-Autoblock = GuiLibrary.API.Windows.Combat.CreateButton({
+Autoblock = GuiLibrary.API.Windows.Exploit.CreateButton({
 	["Name"] = "Godmode",
 	["Function"] = function(callback)
 		if callback then
@@ -426,6 +432,43 @@ Autoblock = GuiLibrary.API.Windows.Combat.CreateButton({
 		end
 	end,
 })
+
+--[[local charRf = game.Players.LocalPlayer.Character.DefaultBow.__comm__.RF
+function shootbow()
+	pcall(function()
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v.Name ~= game.Players.LocalPlayer.Name then 
+				if (v.Character.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
+					pcall(function()
+						local args = {
+							[1] = v.Character.PrimaryPart.Position,
+							[2] = 1.44
+						}
+						charRf.Fire:InvokeServer(unpack(args))
+					end)
+				end
+			end
+		end
+	end)
+end
+pcall(function()
+	local bowauraenabled = false
+	Bowaura = GuiLibrary.API.Windows.Combat.CreateButton({
+		["Name"] = "Bow Aura",
+		["Function"] = function(callback)
+			if callback then
+				repeat
+					pcall(shootbow())
+					task.wait(5)
+				until (not bowauraenabled)
+			else
+				pcall(function()
+					bowauraconnection:Disconnect()
+				end)
+			end
+		end,
+	})
+end)]]
 
 local speedconnection
 Speed = GuiLibrary.API.Windows.Movement.CreateButton({
@@ -470,8 +513,54 @@ Flight = GuiLibrary.API.Windows.Movement.CreateButton({
 	end,
 })
 
+--[[local kbspeedconenction
+KbSpeed = GuiLibrary.API.Windows.Combat.CreateButton({
+	["Name"] = "KbSpeed ",
+	["Function"] = function(callback)
+		if callback then
+			kbspeedconenction = game.RunService.Heartbeat:Connect(function()
+                Rf2.TakeKnockBack:InvokeServer()
+            end)
+        else
+            pcall(function()
+                kbspeedconenction:Disconnect()
+            end)
+		end
+	end,
+})]]
 
 
-task.wait(0.5)
-shared.AutumnLoaded = true
-CreateNotification("Autumn "..GuiLibrary.Version.." Loaded!",10,"http://www.roblox.com/asset/?id=6641087361",Color3.fromRGB(0,255,0))
+--[[CombatSection:NewButton("Bow Aura", "ffff", function()
+    _G.BowAuraEnabled = not _G.BowAuraEnabled
+    while _G.BowAuraEnabled do
+        for i,v in pair(game.Players:GetPlayers()) do
+            if (v.Character.HumanoidRootPart.Position - getplr().Character.HumanoidRootPart.Position).Magnitude < 15 then
+                local args = {
+                    [1] = v.Character.PrimaryPart.Position,
+                    [2] = 1
+                }
+                getplr().Character.DefaultBow.__comm__.RF.Fire:InvokeServer(unpack(args))
+            end
+        end
+        wait()
+    end
+end)
+
+CombatSection:NewButton("Scaffold", "ffff", function()
+    _G.ScaffoldEnabled = not _G.ScaffoldEnabled
+    while _G.ScaffoldEnabled do
+        local args = {
+            [1] = game.Players.LocalPlayer.Character.PrimaryPart.Position - Vector3.new(0,3,0)
+        }
+        Rf.PlaceBlock:InvokeServer(unpack(args))
+        wait()
+    end
+end)
+
+CombatSection:NewButton("ClearAllBlockSpam", "fffff", function()
+    _G.ClearAllBlockSpamEnabled = not _G.ClearAllBlockSpamEnabled
+    while _G.ClearAllBlockSpamEnabled do
+        Rf.ClearBlocks:InvokeServer()
+        wait()
+    end
+end)]]
