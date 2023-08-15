@@ -469,3 +469,9 @@ Flight = GuiLibrary.API.Windows.Movement.CreateButton({
 		end
 	end,
 })
+
+
+
+task.wait(0.5)
+shared.AutumnLoaded = true
+CreateNotification("Autumn "..GuiLibrary.Version.." Loaded!",10,"http://www.roblox.com/asset/?id=6641087361",Color3.fromRGB(0,255,0))
