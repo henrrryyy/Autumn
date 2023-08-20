@@ -711,8 +711,8 @@ ProjectileAura = GuiLibrary.API.Windows.Combat.CreateButton({
 						local bows = getAllBows()
 						for i,v in pairs(bows) do
 							spoofHand(v.Name)
-							task.wait(0.03)
-							if v.Name == "fireball" or v.Name == "snowball" then
+							task.wait(.06)
+							if v.Name == "fireball" then
 								if not AllProjectiles.Enabled then continue end
 							end
 							shoot(v,target.Character.PrimaryPart.Position)
@@ -721,7 +721,7 @@ ProjectileAura = GuiLibrary.API.Windows.Combat.CreateButton({
 				until (not ProjectileAura.Enabled)
 			end)
 		else
-			 
+
 		end
 	end,
 })
@@ -730,7 +730,6 @@ AllProjectiles = ProjectileAura.CreateToggle({
 	["Name"] = "All Projectiles",
 	["Function"] = function() end
 })
-
 
 local knockbackHandler = debug.getupvalue(require(game:GetService("ReplicatedStorage").TS.damage["knockback-util"]).KnockbackUtil.calculateKnockbackVelocity, 1)
 local oldKb = knockbackHandler.kbUpwardStrength
@@ -1001,6 +1000,53 @@ AutoConsume = GuiLibrary.API.Windows.Player.CreateButton({
 						})
 					end
 				until (not AutoConsume.Enabled)
+			end)
+		end
+	end,
+})
+
+local SmallItemsConnection
+SmallItems = GuiLibrary.API.Windows.Visuals.CreateButton({
+	["Name"] = "SmallItems",
+	["Function"] = function(callback)
+		if callback then
+			SmallItemsConnection = workspace.CurrentCamera.Viewmodel.ChildAdded:Connect(function(child)
+				if child:IsA("Accessory") then
+					task.spawn(function()
+						repeat task.wait() until child:FindFirstChild("Handle")
+						for i,v in pairs(child:GetDescendants()) do
+							v.Size /= 2
+						end
+					end)
+				end
+			end)
+		else
+			pcall(function()
+				SmallItemsConnection:Disconnect()
+			end)
+		end
+	end,
+})
+
+local lighting = game.Lighting
+local oldsky = {
+	amb = lighting.Ambient,
+	outdooramb = lighting.OutdoorAmbient,
+}
+
+local purple = Color3.fromRGB(107, 58, 255)
+Ambience = GuiLibrary.API.Windows.Visuals.CreateButton({
+	["Name"] = "Ambience",
+	["Function"] = function(callback)
+		if callback then
+			spawn(function()
+				lighting.Ambient = purple
+				lighting.OutdoorAmbient = purple
+			end)
+		else
+			spawn(function()
+				lighting.Ambient = oldsky.amb
+				lighting.OutdoorAmbient = oldsky.outdooramb
 			end)
 		end
 	end,
