@@ -1,4 +1,4 @@
-local GuiLibrary = {Version = "1.0.1",CustomEdition = "",WindowCount = 0, API = {Windows = {},buttons = {}}}
+local GuiLibrary = {Version = "1.0.3",CustomEdition = "",WindowCount = 0, API = {Windows = {},buttons = {}}}
 local utilityToggles = {}
 local entity = {gui = game.Players.LocalPlayer.PlayerGui,HumanoidRootPart=function() return game.Players.LocalPlayer.Character.PrimaryPart end}
 local protectInstance = function(v) v.Name = math.random() end
