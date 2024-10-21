@@ -138,19 +138,23 @@ ArrayListManager = {
 }
 
 task.spawn(function()
-	repeat
-		for _, Label in ArrayListManager.List do
-			if Label:IsA("TextLabel") then
-				Label.BackgroundTransparency = GuiLibrary.ArraylistManager.BackgroundTransparency
+	pcall(function()
+		repeat
+			ArrayFrame.Visible = GuiLibrary.ArraylistEnabled
+			for _, Label in ArrayListManager.List do
+				if Label:IsA("TextLabel") then
+					Label.BackgroundTransparency = GuiLibrary.ArraylistManager.BackgroundTransparency
+				end
 			end
-		end
-		task.wait()
-	until false
+			task.wait()
+		until false
+	end)
 end)
 
 --[[function GuiLibrary:SendNotification(Title, Description, Image, Time)
 	
 end]]
+GuiLibrary.ArraylistEnabled = false
 GuiLibrary.ArraylistManager = ArrayListManager
 function GuiLibrary:CreateWindow(Name)
 	local top = Instance.new("TextLabel", ScreenGui)
@@ -368,6 +372,15 @@ function GuiLibrary:CreateWindow(Name)
 					return "Not Yet"
 				end,]]
 			}
+			
+			
+			UserInputService.InputBegan:Connect(function(Key, GPE)
+				if GPE then return end
+				if Keybind == nil then return end
+				if Key.KeyCode == Keybind then
+					ButtonOptions.ToggleButton()
+				end
+			end)
 			
 			Button.MouseButton1Down:Connect(function()
 				ButtonOptions.ToggleButton()
